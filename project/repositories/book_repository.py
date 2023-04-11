@@ -3,6 +3,7 @@ from peewee import ForeignKeyField, CharField, DateField, fn, JOIN
 from project.repositories.base_repository import BaseRepository
 from project.repositories.author_repository import AuthorRepository
 from playhouse.shortcuts import dict_to_model, model_to_dict
+from uuid import uuid4
 
 
 class BookRepository(BaseRepository):
@@ -29,9 +30,10 @@ class BookRepository(BaseRepository):
         return book
 
     def create_book(self, data):
+        data["id"] = uuid4()
         try:
-            book = BookRepository().create(data)
-            return {"sucesso": "Livro cadastrado com suvesso", "livro": book}
+            book = BookRepository.create(**data)
+            return book
         except Exception as ex:
             return {"erro": "Erro ao cadastrar", "status": ex}
 

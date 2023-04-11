@@ -20,21 +20,21 @@ def get_book(id):
 
 
 @book_router.route("/book", methods=["POST"])
-def create_book(data):
+def create_book():
     data = json.loads(request.data)
     book = BookService().create_book(data)
     return book
 
 
 @book_router.route("/book", methods=["PUT"])
-def update_book(data):
+def update_book():
     data = json.loads(request.data)
     book = BookService().update_book(data)
     return book
 
 
 @book_router.route("/book", methods=["DELETE"])
-def delete_book(data):
+def delete_book():
     data = json.loads(request.data)
     book = BookService().delete_book(data)
     return book

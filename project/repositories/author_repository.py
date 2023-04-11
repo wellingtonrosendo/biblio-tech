@@ -24,7 +24,6 @@ class AuthorRepository(BaseRepository):
         data["id"] = uuid4()
         try:
             author = AuthorRepository().create(**data)
-            print(author)
             return {"sucesso": "Autor cadastrado com sucesso", "autor": author}
         except Exception as ex:
             print(ex)
