@@ -1,0 +1,26 @@
+version: "1.0"
+services:
+  bibliotec-backend:
+    container_name: bibliotec-backend
+    image: bibliotec-backend
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/usr/src/app/
+    command: gunicorn --reload -b 0.0.0.0:5000 -k gevent --log-file - --log-level debug --access-logfile - manage:app --timeout 300
+
+  mysql:
+    container_name: mysql
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "db_bibliotec"
+      MYSQL_TCP_PORT: 3307
+    ports:
+      - 3307:3307
+    expose:
+      - 3307
+    cap_add:
+      - SYS_NICE
