@@ -4,7 +4,7 @@ from flask import Blueprint, request
 from project.services.category_service import CategoryService
 
 
-category_router = Blueprint('file_router', __name__)
+category_router = Blueprint('category_router', __name__)
 
 
 @category_router.route("/category", methods=["GET"])
@@ -13,9 +13,9 @@ def get_all_category():
     return category
 
 
-@category_router.route("/category/<public_id>", methods=["GET"])
-def get_category(public_id):
-    category = CategoryService().get_category(public_id)
+@category_router.route("/category/<id>", methods=["GET"])
+def get_category(id):
+    category = CategoryService().get_category(id)
     return category
 
 
@@ -25,10 +25,10 @@ def create_category():
     return CategoryService().create_category(data)
 
 
-@category_router.route("/category/<public_id>", methods=["PUT"])
-def update_category(public_id):
+@category_router.route("/category/<id>", methods=["PUT"])
+def update_category(id):
     data = json.loads(request.data)
-    category = CategoryService().update_category(public_id, data)
+    category = CategoryService().update_category(id, data)
     return category
 
 

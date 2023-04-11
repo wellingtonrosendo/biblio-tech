@@ -23,10 +23,10 @@ class CategoryService():
                 logging.error(ex)
                 return ex
 
-    def update_category(self, public_id, data):
+    def update_category(self, id, data):
         with mysql_db.atomic() as transaction:
             try:
-                category = CategoryRepository().get_category(public_id)
+                category = CategoryRepository().get_category(id)
                 upd_category = CategoryRepository().update_category(category, data)
                 print(upd_category)
                 return {"category": upd_category}
@@ -35,6 +35,7 @@ class CategoryService():
                 logging.error(ex)
                 return ex
 
-    def delete_category(self, data):
-        category = CategoryRepository().delete_category(data)
-        return {"category": category}
+    def delete_category(self, id):
+        category = CategoryRepository().get_category(id)
+        result = CategoryRepository().delete_category(category)
+        return {"category": result}

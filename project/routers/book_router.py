@@ -1,34 +1,47 @@
 # -*- coding: utf-8 -*-
 import json
 from flask import Blueprint, request
-from project.services.movie_service import MovieService
+from project.services.book_service import BookService
 
 
-movie_router = Blueprint('file_router', __name__)
+book_router = Blueprint('book_router', __name__)
 
 
-@movie_router.route("/movie", methods=["GET"])
-def get_movie():
-    movie = MovieService().get_movie()
-    return movie
+@book_router.route("/book", methods=["GET"])
+def get_all_book():
+    book = BookService().list_book()
+    return book
 
 
-@movie_router.route("/movie", methods=["POST"])
-def create_movie(data):
+@book_router.route("/book/<id>", methods=["GET"])
+def get_book(id):
+    category = BookService().get_book(id)
+    return category
+
+
+@book_router.route("/book", methods=["POST"])
+def create_book(data):
     data = json.loads(request.data)
-    movie = MovieService().create_movie(data)
-    return movie
+    book = BookService().create_book(data)
+    return book
 
 
-@movie_router.route("/movie", methods=["PUT"])
-def update_movie(data):
+@book_router.route("/book", methods=["PUT"])
+def update_book(data):
     data = json.loads(request.data)
-    movie = MovieService().update_movie(data)
-    return movie
+    book = BookService().update_book(data)
+    return book
 
 
-@movie_router.route("/movie", methods=["DELETE"])
-def delete_movie(data):
+@book_router.route("/book", methods=["DELETE"])
+def delete_book(data):
     data = json.loads(request.data)
-    movie = MovieService().delete_movie(data)
-    return movie
+    book = BookService().delete_book(data)
+    return book
+
+
+@book_router.route("/book/author", methods=["GET"])
+def get_book_author():
+    query_string = request.args.get("name")
+    book = BookService().get_book_author(query_string)
+    return book

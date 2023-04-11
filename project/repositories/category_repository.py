@@ -1,4 +1,4 @@
-from peewee import AutoField, CharField
+from peewee import DateField, CharField
 from project.repositories.base_repository import BaseRepository
 from uuid import uuid4
 from playhouse.shortcuts import model_to_dict, dict_to_model
@@ -6,9 +6,11 @@ from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class CategoryRepository(BaseRepository):
 
-    id = AutoField()
-    public_id = CharField()
+    id = CharField()
     name = CharField()
+    created_at = DateField()
+    updated_at = DateField()
+    deleted_at = DateField()
 
     class Meta:
         table_name = 'category'
@@ -17,13 +19,14 @@ class CategoryRepository(BaseRepository):
         categories = list(CategoryRepository().select().dicts())
         return categories
 
-    def get_category(self, public_id):
+    def get_category(self, id):
         category = CategoryRepository().select().where(
-            CategoryRepository.public_id == public_id).dicts().first()
+            CategoryRepository.id == id
+        ).dicts().first()
         return category
 
     def create_category(self, data):
-        data["public_id"] = uuid4()
+        data["id"] = uuid4()
         create_category = CategoryRepository().create(**data)
         return create_category
 
@@ -32,7 +35,8 @@ class CategoryRepository(BaseRepository):
             category[key] = data[key]
         category = dict_to_model(CategoryRepository, category)
         category.save()
-        return category.public_id
+        return category.id
 
     def delete_category(self, data):
+        print(data)
         return {}
